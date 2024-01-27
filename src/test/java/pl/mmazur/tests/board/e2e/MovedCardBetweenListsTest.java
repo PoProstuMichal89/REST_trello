@@ -29,6 +29,7 @@ class MovedCardBetweenListsTest {
         createNewBoardTest();
         createFirstListTest();
         createSecondListTest();
+        createCardOnFirstListTest();
     }
 
 
