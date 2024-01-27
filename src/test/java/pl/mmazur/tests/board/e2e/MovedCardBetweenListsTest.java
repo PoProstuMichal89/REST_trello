@@ -5,6 +5,7 @@ import io.restassured.response.Response;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import pl.mmazur.requests.board.CreateBoardRequest;
+import pl.mmazur.requests.card.CreateCardRequest;
 import pl.mmazur.requests.lists.CreateListsRequest;
 import pl.mmazur.tests.board.CreateBoardTest;
 
@@ -19,9 +20,12 @@ class MovedCardBetweenListsTest {
     private String boardId;
     private String firstListId;
     private String secondListId;
+    private String cardName = "My first card";
+    private String cardId;
 
-    @Test //testy e2e wg. kolejności ustalonje w scenariuszu
-    void scenarioE2ETest(){
+    @Test
+        //testy e2e wg. kolejności ustalonje w scenariuszu
+    void scenarioE2ETest() {
         createNewBoardTest();
         createFirstListTest();
         createSecondListTest();
@@ -68,6 +72,18 @@ class MovedCardBetweenListsTest {
         Assertions.assertThat(json.getString("name")).isEqualTo(secondListName);
         secondListId = json.getString("id");
 
+    }
+
+    void createCardOnFirstListTest() {
+        Map<String, String> queryParams = new HashMap<>();
+        queryParams.put("idList", firstListId);
+        queryParams.put("name", cardName);
+        final Response response = CreateCardRequest.createCardRequest(queryParams);
+        Assertions.assertThat(response.statusCode()).isEqualTo(200);
+
+        JsonPath json = response.jsonPath();
+        Assertions.assertThat(json.getString("name")).isEqualTo(cardName);
+        cardId = json.getString("id");
     }
 
 
