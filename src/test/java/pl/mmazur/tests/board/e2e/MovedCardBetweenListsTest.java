@@ -5,7 +5,9 @@ import io.restassured.response.Response;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import pl.mmazur.requests.board.CreateBoardRequest;
+import pl.mmazur.requests.board.DeleteBoardRequest;
 import pl.mmazur.requests.card.CreateCardRequest;
+import pl.mmazur.requests.card.UpdateCardRequest;
 import pl.mmazur.requests.lists.CreateListsRequest;
 import pl.mmazur.tests.board.CreateBoardTest;
 
@@ -30,6 +32,8 @@ class MovedCardBetweenListsTest {
         createFirstListTest();
         createSecondListTest();
         createCardOnFirstListTest();
+        moveCardFromFirstListToSecondListTest();
+//        deleteBoardTest();
     }
 
 
@@ -85,6 +89,21 @@ class MovedCardBetweenListsTest {
         JsonPath json = response.jsonPath();
         Assertions.assertThat(json.getString("name")).isEqualTo(cardName);
         cardId = json.getString("id");
+    }
+
+    void moveCardFromFirstListToSecondListTest() {
+        Map<String, String> queryParams = new HashMap<>();
+        queryParams.put("idList", secondListId);
+        final Response response = UpdateCardRequest.updateCardRequest(queryParams, cardId);
+        Assertions.assertThat(response.statusCode()).isEqualTo(200);
+
+        JsonPath json = response.jsonPath();
+        Assertions.assertThat(json.getString("idList")).isEqualTo(secondListId);
+    }
+
+    void deleteBoardTest() {
+        final Response deleteResponse = DeleteBoardRequest.deleteBoardRequest(boardId);
+        Assertions.assertThat(deleteResponse.statusCode()).isEqualTo(200);
     }
 
 
