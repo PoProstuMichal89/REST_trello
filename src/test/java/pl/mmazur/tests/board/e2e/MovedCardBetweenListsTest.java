@@ -33,7 +33,7 @@ class MovedCardBetweenListsTest {
         createSecondListTest();
         createCardOnFirstListTest();
         moveCardFromFirstListToSecondListTest();
-//        deleteBoardTest();
+        deleteBoardTest();
     }
 
 
