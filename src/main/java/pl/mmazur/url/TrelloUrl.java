@@ -5,6 +5,7 @@ public class TrelloUrl {
 
     private static final String BASE_URL = "https://api.trello.com/1";
     private static final String BOARDS = "boards";
+    private static final String LISTS = "lists";
 
     public static String getBaseUrl(){
         return BASE_URL;
@@ -16,6 +17,14 @@ public class TrelloUrl {
 
     public static String getBoardUrl(String boardId){
         return getBoardsUrl() +"/" + boardId;
+    }
+
+    public static String getListsUrl(){
+        return getBaseUrl() + "/" + LISTS;
+    }
+
+    public static String getListUrl(String listId){
+        return getBaseUrl() + "/" + LISTS + "/" + listId;
     }
 
 }
