@@ -11,6 +11,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import pl.mmazur.requests.board.CreateBoardRequest;
 import pl.mmazur.requests.board.DeleteBoardRequest;
+import pl.mmazur.requests.board.ReadExistingBoard;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,12 +37,27 @@ public class CreateBoardTest {
         Assertions.assertThat((json.getString("name"))).isEqualTo(boardName);
         boardId = json.getString("id");
 
+        //READ EXISTING BOARD
+        final Response readResponse = ReadExistingBoard.readExistingBoard(boardId);
+        Assertions.assertThat(readResponse.statusCode()).isEqualTo(200);
+        JsonPath jsonRead = readResponse.jsonPath();
+        Assertions.assertThat((jsonRead.getString("name"))).isEqualTo(boardName);
+
         //Delete board
         final Response deleteResponse = DeleteBoardRequest.deleteBoardRequest(boardId);
-
 //        Assertions.assertEquals(200, deleteResponse.statusCode()); -> asercja z junita
         Assertions.assertThat(deleteResponse.statusCode()).isEqualTo(200);
+
+        //READ NON EXISTING BOARD
+        final Response readResponse2 = ReadExistingBoard.readExistingBoard(boardId);
+        Assertions.assertThat(readResponse2.statusCode()).isEqualTo(404);
+
+        //DELETE NON EXISTING BOARD
+        final Response deleteResponse2 = DeleteBoardRequest.deleteBoardRequest(boardId);
+        Assertions.assertThat(deleteResponse2.statusCode()).isEqualTo(404);
+
     }
+
 
     @DisplayName("Create board with valid data")
     @ParameterizedTest(name = "Board name: {0}") //wyświetla nazwę testu zamiast nazwy metody

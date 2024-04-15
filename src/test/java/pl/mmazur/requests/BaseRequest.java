@@ -16,7 +16,7 @@ public class BaseRequest {
         requestSpecBuilder.addQueryParam("key", TrelloSecrets.getKey());
         requestSpecBuilder.addQueryParam("token", TrelloSecrets.getToken());
         requestSpecBuilder.addFilter(new RequestLoggingFilter());
-        requestSpecBuilder.addFilter(new ResponseLoggingFilter()); // --> dodawanie logowania requestów i response'ów
+        requestSpecBuilder.addFilter(new ResponseLoggingFilter()); // --> dodawanie logowania requestów i response'ów (wszystkich, nie tylko błędnych
 
         return requestSpecBuilder.build();
     }
